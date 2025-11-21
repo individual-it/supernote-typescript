@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "./lib",
+    "outDir": "./lib"
   },
   "include": [
     "./src"
