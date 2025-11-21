@@ -2,6 +2,7 @@ import * as fs from "fs-extra"
 import { fetchMirrorFrame } from "../src/mirror"
 import { toImage } from "../src/conversion"
 import { SupernoteX } from "../src/parsing"
+import * as imagejs from "image-js"
 import http from 'http';
 
 function readFileToUint8Array(filePath: string): Promise<Uint8Array> {
@@ -40,7 +41,7 @@ describe("image", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/test.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/test.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -51,7 +52,7 @@ describe("nomad", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/nomad-3.15.27-blank-2p.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/nomad-3.15.27-blank-2p.note-${index}.png`, image)
     }
   }, 30000)
 
@@ -60,7 +61,7 @@ describe("nomad", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/nomad-3.15.27-blank-shapes-and-RTR.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/nomad-3.15.27-blank-shapes-and-RTR.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -71,7 +72,7 @@ describe("A5X", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/a5x-2.14.28.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/a5x-2.14.28.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -82,7 +83,7 @@ describe("manta", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/manta.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/manta.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -93,7 +94,7 @@ describe("horizontal", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/horizontal.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/horizontal.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -104,7 +105,7 @@ describe("color", () => {
     let images = await toImage(sn)
     expect(images).not.toBeUndefined()
     for await (const [index, image] of images.entries()) {
-      await image.save(`tests/output/unknown-colors.note-${index}.png`)
+      await imagejs.writeSync(`tests/output/unknown-colors.note-${index}.png`, image)
     }
   }, 30000)
 })
@@ -165,7 +166,7 @@ describe('profile', () => {
       let images = await toImage(sn)
       expect(images).not.toBeUndefined()
       for await (const [index, image] of images.entries()) {
-        await image.save(`tests/output/1to10-${index + 1}.png`)
+        await image.write(`tests/output/1to10-${index + 1}.png`)
       }
     }, 30000)
   })
@@ -217,7 +218,7 @@ describe("mirror", () => {
     }
     const image = await fetchMirrorFrame(ipport);
     expect(image).toBeDefined();
-    await image.save(`tests/output/mirror.jpg`)
+    await image.write(`tests/output/mirror.jpg`)
   }, 30000)
 })
 */
