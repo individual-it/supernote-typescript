@@ -1,4 +1,4 @@
-import { Image } from 'image-js';
+import { Image, decode } from 'image-js';
 
 export async function fetchMirrorFrame(ipAddress: string): Promise<Image> {
 	const url = `http://${ipAddress}/screencast.mjpeg`;
@@ -74,7 +74,7 @@ export async function fetchMirrorFrame(ipAddress: string): Promise<Image> {
 						headerEndIndex + headerEnd.length,
 						headerEndIndex + contentLength + 1,
 					);
-					const image = Image.load(imageData);
+					const image = decode(imageData);
 					resolve(image);
 					controller.abort();
 				}

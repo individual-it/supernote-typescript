@@ -5,3 +5,4 @@ tests/output/*.jpg
 tests/output/*.cpuprofile
 *.DS_Store*
 package-lock.json
+.aider*

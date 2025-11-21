@@ -2,13 +2,14 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "strict": true,
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "./lib",
+    "outDir": "./lib"
   },
   "include": [
     "./src"

@@ -1,5 +1,5 @@
 import { ILayer, ISupernote } from './format';
-import { Image } from 'image-js';
+import { Image, ImageColorModel, decodePng } from "image-js";
 import Color from 'color';
 
 type Pixel = [number, number, number, number]; // Define type for pixel data (alpha, red, green, blue)
@@ -34,11 +34,11 @@ async function compositeImages(sourceImage: Image, destinationImage: Image) {
 
 	for (let y = 0; y < destinationImage.height; y++) {
 		for (let x = 0; x < destinationImage.width; x++) {
-			const sourcePixel = sourceImage.getPixelXY(x, y) as Pixel; // Explicitly cast for type safety
-			const destinationPixel = destinationImage.getPixelXY(x, y) as Pixel;
+			const sourcePixel = sourceImage.getPixel(x, y) as Pixel; // Explicitly cast for type safety
+			const destinationPixel = destinationImage.getPixel(x, y) as Pixel;
 
 			const blendedPixel = blendPixelOverlay(sourcePixel, destinationPixel);
-			destinationImage.setPixelXY(x, y, blendedPixel);
+			destinationImage.setPixel(x, y, blendedPixel);
 		}
 	}
 }
@@ -79,17 +79,14 @@ export function toImage(note: ISupernote, pageNumbers?: number[]) {
 					layer.LAYERNAME == 'BGLAYER' &&
 					page.PAGESTYLE.startsWith('user_')
 				) {
-					return await Image.load(layer.bitmapBuffer as Uint8Array);
+					return decodePng(layer.bitmapBuffer as Uint8Array);
 				}
 				buffer = decoder.decode(
 					layer.bitmapBuffer as Uint8Array,
 					note.pageWidth,
 					note.pageHeight,
 				);
-				return new Image(note.pageWidth, note.pageHeight, buffer, {
-					components: 3,
-					alpha: 1,
-				});
+				return new Image(note.pageWidth, note.pageHeight, { colorModel: ImageColorModel.RGBA, data: buffer });
 			});
 
 			let images = await Promise.all(promises);
